@@ -20,7 +20,7 @@ public class Transaction implements Serializable {
     }
 
     public Transaction(BigDecimal amountDecimal, Instant timestamp){
-        this.amountDecimal = amountDecimal;
+        this.amountDecimal = amountDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
         this.timestamp = timestamp;
     }
 

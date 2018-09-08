@@ -25,10 +25,15 @@ public class TransactionController {
 
     @RequestMapping(value = "/transactions", method = {RequestMethod.POST} , produces = "application/json")
     private ResponseEntity<Void> putTransaction(@RequestBody Transaction transaction){
-        if(!transactionService.validateForOlderTransactionTimestamp(transaction, Instant.now()))
+        Instant now = Instant.now();
+
+        if(!transactionService.validateForOlderTransactionTimestamp(transaction, now))
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-        if(!transactionService.validateForFutureTransactionTimestampAndAmount(transaction, Instant.now()))
+        if(!transactionService.validateForFutureTransactionTimestamp(transaction, now))
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        else
+        if(!transactionService.validateTransactionAmount(transaction))
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         else{
             transactionService.saveTransaction(transaction);

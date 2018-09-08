@@ -34,6 +34,18 @@ public class TransactionStatisticsService implements StatisticsService<Transacti
         if (transactionList == null || transactionList.isEmpty())
             return transactionStatistics;
 
+        BigDecimal[] transaction_amount_list = transactionList.stream().
+                map(a -> a.getAmountDecimal()).toArray(size -> new BigDecimal[size]);
+
+        BigDecimal sum = Arrays.stream(transaction_amount_list).reduce(
+                BigDecimal.ZERO, (t, u) -> t.add(u));
+        transactionStatistics.setSum(sum.toString());
+        transactionStatistics.setCount(transactionList.size());
+        transactionStatistics.setMax(Arrays.stream(transaction_amount_list).max(Comparator.naturalOrder()).get().toString());
+        transactionStatistics.setMin(Arrays.stream(transaction_amount_list).min(Comparator.naturalOrder()).get().toString());
+        transactionStatistics.setAvg(sum.
+                divide(new BigDecimal(transactionStatistics.getCount()), RoundingMode.HALF_UP).toString());
+
         logger.info("transactionStatistics :: {}", transactionStatistics);
         return transactionStatistics;
 

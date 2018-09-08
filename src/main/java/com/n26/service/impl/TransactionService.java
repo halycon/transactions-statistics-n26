@@ -24,8 +24,8 @@ public class TransactionService {
         return transaction.getTimestamp().isAfter(now.minus(60,ChronoUnit.SECONDS));
     }
 
-    public boolean validateForFutureTransactionTimestampAndAmount(Transaction transaction, Instant now){
-        return !transaction.getTimestamp().isAfter(now) && validateTransactionAmount(transaction);
+    public boolean validateForFutureTransactionTimestamp(Transaction transaction, Instant now){
+        return !transaction.getTimestamp().isAfter(now);
     }
 
     public List<Transaction> findTransactionsByInstant(Instant instant){
@@ -40,13 +40,17 @@ public class TransactionService {
         transactionRepository.deleteAll();
     }
 
-    private boolean validateTransactionAmount(Transaction transaction){
+    public boolean validateTransactionAmount(Transaction transaction){
         try {
             transaction.setAmountDecimal(new BigDecimal(transaction.getAmount()));
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void setTransactionRepository(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
     }
 
 }
