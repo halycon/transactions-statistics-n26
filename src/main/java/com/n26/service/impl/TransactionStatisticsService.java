@@ -51,4 +51,8 @@ public class TransactionStatisticsService implements StatisticsService<Transacti
 
     }
 
+    public void setTransactionRepository(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
+
 }
