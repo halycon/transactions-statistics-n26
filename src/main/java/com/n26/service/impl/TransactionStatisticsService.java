@@ -31,8 +31,12 @@ public class TransactionStatisticsService implements StatisticsService<Transacti
 
         TransactionStatistics transactionStatistics = new TransactionStatistics();
 
-        logger.info("transactionStatistics :: {}",transactionStatistics);
+        if (transactionList == null || transactionList.isEmpty())
+            return transactionStatistics;
+
+        logger.info("transactionStatistics :: {}", transactionStatistics);
         return transactionStatistics;
+
     }
 
 }

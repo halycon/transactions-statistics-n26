@@ -1,19 +1,24 @@
 package com.n26.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.n26.domain.Transaction;
 import com.n26.service.impl.TransactionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.Instant;
 
+@ControllerAdvice
 @RestController
 public class TransactionController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private TransactionService transactionService;
@@ -38,4 +43,13 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public final ResponseEntity<Void> httpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+        if(ex.getCause() instanceof InvalidFormatException)
+            return  new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

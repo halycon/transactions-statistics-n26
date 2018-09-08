@@ -33,7 +33,16 @@ public class TransactionInMemoryRepository implements TransactionRepository {
 
         if(from.isAfter(to))
             return null;
-        return null;
+        return transactionMap
+                .subMap(from.toEpochMilli(),to.toEpochMilli())
+                .values()
+                .parallelStream()
+                .flatMap(i-> {
+                    synchronized (i) {
+                        return i.stream();
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     @Override

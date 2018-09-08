@@ -45,7 +45,6 @@ public class TransactionService {
             transaction.setAmountDecimal(new BigDecimal(transaction.getAmount()));
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

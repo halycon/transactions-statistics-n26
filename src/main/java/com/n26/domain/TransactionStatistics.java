@@ -1,47 +1,46 @@
 package com.n26.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class TransactionStatistics implements Serializable {
 
     private static final long serialVersionUID = -3761418662921828152L;
-    private BigDecimal sum;
-    private BigDecimal avg;
-    private BigDecimal max;
-    private BigDecimal min;
+    private String sum = "0.00";
+    private String avg = "0.00";
+    private String max = "0.00";
+    private String min = "0.00";
     private long count;
 
-    public BigDecimal getSum() {
+    public String getSum() {
         return sum;
     }
 
-    public void setSum(BigDecimal sum) {
+    public void setSum(String sum) {
         this.sum = sum;
     }
 
-    public BigDecimal getAvg() {
+    public String getAvg() {
         return avg;
     }
 
-    public void setAvg(BigDecimal avg) {
+    public void setAvg(String avg) {
         this.avg = avg;
     }
 
-    public BigDecimal getMax() {
+    public String getMax() {
         return max;
     }
 
-    public void setMax(BigDecimal max) {
+    public void setMax(String max) {
         this.max = max;
     }
 
-    public BigDecimal getMin() {
+    public String getMin() {
         return min;
     }
 
-    public void setMin(BigDecimal min) {
+    public void setMin(String min) {
         this.min = min;
     }
 
@@ -51,17 +50,6 @@ public class TransactionStatistics implements Serializable {
 
     public void setCount(long count) {
         this.count = count;
-    }
-
-    @Override
-    public String toString() {
-        return "TransactionStatistics{" +
-                "sum=" + sum +
-                ", avg=" + avg +
-                ", max=" + max +
-                ", min=" + min +
-                ", count=" + count +
-                '}';
     }
 
     @Override
@@ -80,5 +68,16 @@ public class TransactionStatistics implements Serializable {
     public int hashCode() {
 
         return Objects.hash(sum, avg, max, min, count);
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionStatistics{" +
+                "sum='" + sum + '\'' +
+                ", avg='" + avg + '\'' +
+                ", max='" + max + '\'' +
+                ", min='" + min + '\'' +
+                ", count=" + count +
+                '}';
     }
 }

@@ -1,10 +1,13 @@
 package com.n26.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = -5003002867846498323L;
