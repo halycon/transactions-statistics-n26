@@ -20,15 +20,15 @@ public class TransactionService {
     @Resource(name = "TransactionInMemoryRepository")
     private TransactionRepository transactionRepository;
 
-    public boolean validateForOlderTransactionTimestamp(Transaction transaction, Instant now){
-        return transaction.getTimestamp().isAfter(now.minus(60,ChronoUnit.SECONDS));
+    public boolean validateForOlderTransactionTimestamp(Transaction transaction, Instant now) {
+        return transaction.getTimestamp().isAfter(now.minus(60, ChronoUnit.SECONDS));
     }
 
-    public boolean validateForFutureTransactionTimestamp(Transaction transaction, Instant now){
+    public boolean validateForFutureTransactionTimestamp(Transaction transaction, Instant now) {
         return !transaction.getTimestamp().isAfter(now);
     }
 
-    public List<Transaction> findTransactionsByInstant(Instant instant){
+    public List<Transaction> findTransactionsByInstant(Instant instant) {
         return transactionRepository.findTransactionsByInstant(instant);
     }
 
@@ -40,7 +40,7 @@ public class TransactionService {
         transactionRepository.deleteAll();
     }
 
-    public boolean validateTransactionAmount(Transaction transaction){
+    public boolean validateTransactionAmount(Transaction transaction) {
         try {
             transaction.setAmountDecimal(new BigDecimal(transaction.getAmount()));
             return true;

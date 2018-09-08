@@ -23,27 +23,24 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @RequestMapping(value = "/transactions", method = {RequestMethod.POST} , produces = "application/json")
-    private ResponseEntity<Void> putTransaction(@RequestBody Transaction transaction){
+    @RequestMapping(value = "/transactions", method = {RequestMethod.POST}, produces = "application/json")
+    private ResponseEntity<Void> putTransaction(@RequestBody Transaction transaction) {
         Instant now = Instant.now();
 
-        if(!transactionService.validateForOlderTransactionTimestamp(transaction, now))
+        if (!transactionService.validateForOlderTransactionTimestamp(transaction, now))
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        else
-        if(!transactionService.validateForFutureTransactionTimestamp(transaction, now))
+        else if (!transactionService.validateForFutureTransactionTimestamp(transaction, now))
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        else
-        if(!transactionService.validateTransactionAmount(transaction))
+        else if (!transactionService.validateTransactionAmount(transaction))
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        else{
+        else {
             transactionService.saveTransaction(transaction);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
-    @RequestMapping(value = "/transactions", method = {RequestMethod.DELETE} , produces = "application/json")
-    private ResponseEntity<Void> removeTransactions(){
-
+    @RequestMapping(value = "/transactions", method = {RequestMethod.DELETE}, produces = "application/json")
+    private ResponseEntity<Void> removeTransactions() {
         transactionService.removeTransactions();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -51,9 +48,8 @@ public class TransactionController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public final ResponseEntity<Void> httpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
-        logger.info("error {}", ex);
-        if(ex.getCause() instanceof InvalidFormatException)
-            return  new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        if (ex.getCause() instanceof InvalidFormatException)
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

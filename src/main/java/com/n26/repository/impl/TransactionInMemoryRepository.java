@@ -31,13 +31,13 @@ public class TransactionInMemoryRepository implements TransactionRepository {
     @Override
     public List<Transaction> findAllBetweenTimestamps(Instant from, Instant to) {
 
-        if(from.isAfter(to))
+        if (from.isAfter(to))
             return null;
         return transactionMap
-                .subMap(from.toEpochMilli(),to.toEpochMilli())
+                .subMap(from.toEpochMilli(), to.toEpochMilli())
                 .values()
                 .parallelStream()
-                .flatMap(i-> {
+                .flatMap(i -> {
                     synchronized (i) {
                         return i.stream();
                     }

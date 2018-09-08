@@ -22,15 +22,15 @@ public class TransactionStatisticsControler {
     @Resource(name = "TransactionStatisticsService")
     private StatisticsService<TransactionStatistics> transactionStatisticsService;
 
-    @RequestMapping(value = "/statistics", method = {RequestMethod.GET} , produces = "application/json")
-    private ResponseEntity<TransactionStatistics> statistics(){
+    @RequestMapping(value = "/statistics", method = {RequestMethod.GET}, produces = "application/json")
+    private ResponseEntity<TransactionStatistics> statistics() {
 
         Instant instantOfRequest = Instant.now();
 
         TransactionStatistics transactionStatistics = transactionStatisticsService.
-                getStatisticsOfaTimePeriod(instantOfRequest.minus(1,ChronoUnit.MINUTES),
+                getStatisticsOfaTimePeriod(instantOfRequest.minus(1, ChronoUnit.MINUTES),
                         instantOfRequest);
 
-        return new ResponseEntity<>(transactionStatistics,HttpStatus.OK);
+        return new ResponseEntity<>(transactionStatistics, HttpStatus.OK);
     }
 }

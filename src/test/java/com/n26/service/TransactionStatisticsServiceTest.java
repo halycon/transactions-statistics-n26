@@ -22,26 +22,26 @@ public class TransactionStatisticsServiceTest {
     private TransactionRepository transactionRepository;
 
     @Before
-    public void init(){
+    public void init() {
         transactionStatisticsStatisticsService = new TransactionStatisticsService();
         transactionRepository = new TransactionInMemoryRepository();
         transactionStatisticsStatisticsService.setTransactionRepository(transactionRepository);
     }
 
     @Test
-    public void getStatisticsOfaTimePeriod_WithoutTransactions_ReturnsEmptytObject(){
+    public void getStatisticsOfaTimePeriod_WithoutTransactions_ReturnsEmptytObject() {
         Instant now = Instant.now();
 
         TransactionStatistics emptyTransactionStatistics = new TransactionStatistics();
 
         TransactionStatistics transactionStatistics = transactionStatisticsStatisticsService.
-                getStatisticsOfaTimePeriod(now.minus(1,ChronoUnit.MINUTES), now);
+                getStatisticsOfaTimePeriod(now.minus(1, ChronoUnit.MINUTES), now);
 
         Assert.assertEquals(" transaction object is not empty ", emptyTransactionStatistics, transactionStatistics);
     }
 
     @Test
-    public void getStatisticsOfaTimePeriod_WithTransactionDataOnRepository_ReturnsCorrectObject(){
+    public void getStatisticsOfaTimePeriod_WithTransactionDataOnRepository_ReturnsCorrectObject() {
         Instant now = Instant.now();
 
         transactionRepository.deleteAll();
@@ -55,16 +55,16 @@ public class TransactionStatisticsServiceTest {
         predefinedTransactionStatistics.setCount(60);
 
         TransactionStatistics transactionStatistics = transactionStatisticsStatisticsService.
-                getStatisticsOfaTimePeriod(now.minus(1,ChronoUnit.MINUTES), now);
+                getStatisticsOfaTimePeriod(now.minus(1, ChronoUnit.MINUTES), now);
 
         Assert.assertEquals(" transaction object values not equals to values ", predefinedTransactionStatistics,
                 transactionStatistics);
     }
 
 
-    public void fillRepositoryWithObjects(Instant now){
-        for(int i = 90 ; i>=0 ; i--){
-            transactionRepository.save(new Transaction(BigDecimal.valueOf(10+2*i),now.minus(1+i,ChronoUnit.SECONDS)));
+    private void fillRepositoryWithObjects(Instant now) {
+        for (int i = 90; i >= 0; i--) {
+            transactionRepository.save(new Transaction(BigDecimal.valueOf(10 + 2 * i), now.minus(1 + i, ChronoUnit.SECONDS)));
         }
     }
 }
