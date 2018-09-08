@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service("TransactionService")
 public class TransactionService {
@@ -25,6 +26,10 @@ public class TransactionService {
 
     public boolean validateForFutureTransactionTimestampAndAmount(Transaction transaction, Instant now){
         return !transaction.getTimestamp().isAfter(now) && validateTransactionAmount(transaction);
+    }
+
+    public List<Transaction> findTransactionsByInstant(Instant instant){
+        return transactionRepository.findTransactionsByInstant(instant);
     }
 
     public void saveTransaction(Transaction transaction) {
