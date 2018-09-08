@@ -26,6 +26,7 @@ public class TransactionController {
         if(!transactionService.validateForFutureTransactionTimestampAndAmount(transaction, Instant.now()))
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         else{
+            transactionService.saveTransaction(transaction);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
