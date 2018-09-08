@@ -1,5 +1,6 @@
 package com.n26.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Objects;
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = -5003002867846498323L;
+    @JsonIgnore
     private BigDecimal amountDecimal;
     private String amount;
     private Instant timestamp;
@@ -21,6 +23,11 @@ public class Transaction implements Serializable {
 
     public Transaction(BigDecimal amountDecimal, Instant timestamp){
         this.amountDecimal = amountDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
+        this.timestamp = timestamp;
+    }
+
+    public Transaction(String amount, Instant timestamp){
+        this.amount = amount;
         this.timestamp = timestamp;
     }
 

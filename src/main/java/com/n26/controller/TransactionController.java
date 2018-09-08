@@ -51,6 +51,7 @@ public class TransactionController {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public final ResponseEntity<Void> httpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+        logger.info("error {}", ex);
         if(ex.getCause() instanceof InvalidFormatException)
             return  new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
